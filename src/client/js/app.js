@@ -1,9 +1,16 @@
 /* Global Variables */
-const base = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const zipCode = document.getElementById('zip');
-const keyApi = '&appid=a3c31c46e4a9ecc037aff3c4647c9615';
-const generate = document.getElementById('generate');
-const feelings = document.getElementById('feelings');
+
+// Geonames url and username
+const baseGeo = 'http://api.geonames.org/searchJSON?q=roma&maxRows=1&username=yamenbarakat';
+
+// Weatherbit url and key api
+const baseWthrUrl = 'https://api.weatherbit.io/v2.0/forecast/daily';
+const keyWthrApi = '&key=c6692bb0f86944599866726836674cdd';
+const coordinates = '?lat=41.89193&lon=-12.51133';
+
+const test = baseWthrUrl + coordinates + keyWthrApi;
+const city = document.getElementById('city');
+const formDate = document.getElementById('form-date');
 const date = document.getElementById('date');
 const temp = document.getElementById('temp');
 const content = document.getElementById('content');
@@ -14,12 +21,22 @@ let d = new Date();
 let newDate = d.getMonth()+1 +'/'+ d.getDate()+'/'+ d.getFullYear();
 
 
-// get the weather from OpenWeatherMap 
+// get the weather from weatherbit 
 const weather = async(url) => {
     const request = await fetch(url);
     // transform data to JSON
     const retrieved = await request.json();
-    return retrieved;
+    // cheack the weather of the provided date
+    const dateVal = date.value;
+    const wthrData = retrieved.data;
+    for (d of wthrData) {
+        if (dateVal === d.datetime) {
+            console.log(d);
+            return true
+        }
+    }
+    alert('please enter correct date')
+
 };
 
 
@@ -64,14 +81,19 @@ const updateUI = async(projectData) => {
 
 // get the weather data from OpenWeatherMap, then post the data, finally get the data to update the UI
 const chainCall = () => {
-    weather(base + zipCode.value + keyApi)
+    weather(test)
 
-    .then(data => postData('/weather', [data, {date: newDate}, {feelings: feelings.value}]))
+    //.then(data => postData('/weather', [data, {date: newDate}, {feelings: feelings.value}]))
 
-    .then(getData)
+    //.then(getData)
 };
 
+const formSub = formDate.addEventListener('submit', (e) => {
+    e.preventDefault()
+    chainCall()
+})
 
-generate.addEventListener('click', () => {
-    chainCall();
-});
+export {
+    chainCall,
+    formSub
+}

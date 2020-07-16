@@ -3,30 +3,31 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Weather Journal</title>
+  <title>Travel Info</title>
   <link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <div id="app">
-    <div class="holder headline">
-      <h1>Weather Journal App</h1>
-    </div>
-    <div class="holder zip">
-      <label for="zip">Enter Zipcode here</label>
-      <input type="text" id="zip" placeholder="enter zip code here">
-    </div>
-    <div class="holder feel">
-      <div class="feelings-container">
-        <label for="feelings">How are you feeling today?</label>
-        <textarea class="myInput" id="feelings" placeholder="Enter your feelings here" cols="50"></textarea>
-      </div>
-      <button id="generate" type="submit"> Generate </button>
+    <header>
+      <h1>Travel Info</h1>
+    </header>
+    <div class="holder form">
+      <form id="form-date">
+        <div class="holder city">
+          <label for="city">Enter a city here:</label>
+          <input type="text" id="city">
+        </div>
+        <div class="holdder date">
+          <label for="datetime">Enter the date:</label>
+          <input type="datetime" id="date" pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" placeholder="YYYY-MM-DD" required>
+        </div>
+        <button id="generate" type="submit">Submit</button>
+      </form>
     </div>
     <div class="holder entry">
       <div class="title">Most Recent Entry</div>
       <div id="entryHolder">
-        <div id="date"></div>
         <div id="temp"></div>
         <div id="content"></div>
       </div>

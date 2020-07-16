@@ -1,5 +1,43 @@
-$color: #ddd;
+/* import the main font */
+@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap);
 
+/* import Lobster font */
+@import url(https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;700&display=swap);
+
+/* varibles */
+$main-bg-color: #d6986d;
+$sub-bg-color: #333;
+$font-lobster: "Lobster", cursive, sans-serif;
+
+/* global */
 body {
-    background-color: $color;
+    font: 16px/1.4 "Roboto", sans-serif;
+    margin: 0;
+}
+
+
+#app {
+    display: grid;
+    grid-template-rows: 10vh minmax(50vh, 80vh) 10vh;
+}
+
+/*#app {
+    display: grid;
+    grid-template-rows: 20vh minmax(50vh, 70vh) 10vh;
+}*/
+
+
+/*h1 {
+    font-family: $font-lobster;
+    font-size: 50px;
+}*/
+
+
+main {
+    background-color: $main-bg-color;
+}
+
+
+footer {
+    background-color: $sub-bg-color;
 }

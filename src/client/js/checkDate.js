@@ -1,9 +1,37 @@
 const date = document.getElementById('date');
 
-// for choosin date Set the current date as a minimum and add 16 to it as a maximum whenever the page loads 
+// This file is for choosin date, it sets the current date as a minimum and add 16 to it as a maximum whenever the page loads 
+
+// helper date function for checking the days if they are above the month's days
+const checkDays = (m, d) => {
+    // store days of months
+    const dm = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    // store the max range of days
+    let max = d + 16;
+    // check the days of the month
+    const checkMonth = dm[m-1];
+
+    let update;
+
+    // check which month the max days go above the month's days to update the date
+    if (checkMonth === 31 && max > 31) {
+        update = max - 31;
+    } else if (checkMonth === 30 && max > 30) {
+        update = max - 30;
+    } else if (checkMonth === 28 && max > 28) {
+        update = max - 28;
+    } else {
+        // if none of the above is true, then return the same month with the max days
+    return [m, max]
+    }
+
+    m++
+    d = update;
+    return [m, d]
+}
 
 // helper date function for checking the months and days if they are less than 10
-const checkMonthAndDay = (y, m, d) => {
+const isTen = (y, m, d) => {
     if (m < 10) {
         m = '0' + m;
     }
@@ -11,24 +39,6 @@ const checkMonthAndDay = (y, m, d) => {
         d = '0' + d
     }
     return [y, m, d].join('-')
-}
-
-// helper date function for checking the days if they are above the month's days
-const checkDays = (m, d) => {
-    // store the max range of days
-    let limit = d + 16;
-
-    let newMonthDays;
-
-    if (d === 31 && limit > 31) {
-        newMonthDays = limit - 31;
-    } else if (d === 30 && limit > 30) {
-        newMonthDays = limit - 30;
-    } else if (d === 28 && limit > 28) {
-        newMonthDays = limit - 28;
-    }
-    m++
-    d = newMonthDays;
 }
 
 // main date function
@@ -41,10 +51,16 @@ const dateUpdate = window.addEventListener('load', () => {
     let months = (d.getMonth() + 1);
     let days = d.getDate();
 
-    let minDate = checkMonthAndDay(years, months, days);
+    // set the the current date as a minimum
+    const minDate = isTen(years, months, days);
     date.setAttribute('min', minDate);
 
-    let maxDate = checkDate(years, months, days + 16);
+    // set the the current date with 16 days as a maximum
+    const check = checkDays(months, days);
+    const maxDate = isTen(years, check[0], check[1])
     date.setAttribute('max', maxDate);
 
 })
+
+
+export {dateUpdate}

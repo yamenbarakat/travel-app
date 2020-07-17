@@ -15,32 +15,28 @@ const paraPix = '&q=roma&image_type=photo&category=travel&safesearch=true'
 
 const test = baseWthrUrl + coordinates + keyWthr;
 const city = document.getElementById('city');
-const formDate = document.getElementById('form-date');
-const date = document.getElementById('date');
+const form = document.getElementById('form');
+
 const temp = document.getElementById('temp');
 const content = document.getElementById('content');
 
 
-// Create a new date instance dynamically with JS
-let d = new Date();
-let newDate = d.getMonth()+1 +'/'+ d.getDate()+'/'+ d.getFullYear();
 
-
-// get the weather from weatherbit 
-const weather = async(url) => {
+// post the Geonames coordinates of the provided city 
+const postGeo = async(url) => {
     const request = await fetch(url);
     // transform data to JSON
     const retrieved = await request.json();
     // cheack the weather of the provided date
     const dateVal = date.value;
     const wthrData = retrieved.data;
+
     for (d of wthrData) {
         if (dateVal === d.datetime) {
             console.log(d);
             return true
         }
     }
-    alert('please enter correct date')
 
 };
 
@@ -97,12 +93,13 @@ const chainCall = () => {
     //.then(getData)
 };
 
-const formSub = formDate.addEventListener('submit', (e) => {
+const formSub = form.addEventListener('submit', (e) => {
     e.preventDefault()
     chainCall()
 })
 
 export {
+    dateUpdate,
     chainCall,
     formSub
 }

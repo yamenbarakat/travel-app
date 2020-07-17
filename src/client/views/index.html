@@ -13,14 +13,14 @@
       <h1>Travel App</h1>
     </header>
     <main>
-      <form id="form-date">
+      <form id="form">
         <div class="holder city">
           <label for="city">Enter a city you want to travel to:</label>
           <input type="text" id="city">
         </div>
         <div class="holder date">
           <label for="datetime">Enter the date you are leaving:</label>
-          <input type="datetime" id="date" pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" placeholder="YYYY-MM-DD" required>
+          <input type="date" id="date" required>
         </div>
         <button id="generate" type="submit">Submit</button>
       </form>

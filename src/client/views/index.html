@@ -2,33 +2,32 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>Travel Info</title>
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel App</title>
   <link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <div id="app">
     <header>
-      <h1>Travel Info</h1>
+      <h1>Travel App</h1>
     </header>
     <main>
-      <div class="holder form">
-        <form id="form-date">
-          <div class="holder city">
-            <label for="city">Enter a city here:</label>
-            <input type="text" id="city">
-          </div>
-          <div class="holder date">
-            <label for="datetime">Enter the date:</label>
-            <input type="datetime" id="date" pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" placeholder="YYYY-MM-DD" required>
-          </div>
-          <button id="generate" type="submit">Submit</button>
-        </form>
-      </div>
+      <form id="form-date">
+        <div class="holder city">
+          <label for="city">Enter a city you want to travel to:</label>
+          <input type="text" id="city">
+        </div>
+        <div class="holder date">
+          <label for="datetime">Enter the date you are leaving:</label>
+          <input type="datetime" id="date" pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" placeholder="YYYY-MM-DD" required>
+        </div>
+        <button id="generate" type="submit">Submit</button>
+      </form>
       <div class="holder entry">
-        <div class="title">Most Recent Entry</div>
+        <h2>Travel Info</h2>
         <div id="entryHolder">
+          <div id="days-counter"></div>
           <div id="temp"></div>
           <div id="content"></div>
         </div>

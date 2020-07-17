@@ -5,10 +5,15 @@ const baseGeo = 'http://api.geonames.org/searchJSON?q=roma&maxRows=1&username=ya
 
 // Weatherbit url and key api
 const baseWthrUrl = 'https://api.weatherbit.io/v2.0/forecast/daily';
-const keyWthrApi = '&key=c6692bb0f86944599866726836674cdd';
+const keyWthr = '&key=c6692bb0f86944599866726836674cdd';
 const coordinates = '?lat=41.89193&lon=-12.51133';
 
-const test = baseWthrUrl + coordinates + keyWthrApi;
+// Pixabay api
+const basePixUrl = 'https://pixabay.com/api/?';
+const keyPix = 'key=17510514-f3918d85b0fe161f2e31575c3';
+const paraPix = '&q=roma&image_type=photo&category=travel&safesearch=true'
+
+const test = baseWthrUrl + coordinates + keyWthr;
 const city = document.getElementById('city');
 const formDate = document.getElementById('form-date');
 const date = document.getElementById('date');
@@ -61,8 +66,11 @@ const postData = async(url, data) => {
 
 // GET the projectData
 const getData = async() => {
-    const projectData = await fetch('/all');
-    updateUI(projectData)
+    //const projectData = await fetch('/all');
+    //updateUI(projectData)
+    const img = await fetch(basePixUrl + keyPix + paraPix)
+    const jos = await img.json()
+    console.log(jos.hits[0].largeImageURL)
 };
 
 
@@ -83,6 +91,7 @@ const updateUI = async(projectData) => {
 const chainCall = () => {
     weather(test)
 
+    //getData()
     //.then(data => postData('/weather', [data, {date: newDate}, {feelings: feelings.value}]))
 
     //.then(getData)

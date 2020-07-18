@@ -1,5 +1,6 @@
 /* Global Variables */
 
+// to store all the needed data for the trip
 const tripData = {}
 
 // Geonames url, username and para
@@ -70,11 +71,11 @@ const chainCall = () => {
     .then(() => {
         const pixUrl = basePixUrl + keyPix + '&q=' + cityVal + paraPix;
         getImg(pixUrl);
-        console.log(tripData)
     })
 
     // finally post the tripData and update the UI
     .then(() => {
+        console.log(tripData)
         postData('/postTrip', tripData)
     })
 };
@@ -84,11 +85,13 @@ const getGeo = async(url) => {
     const request = await fetch(url);
     // transform data to JSON
     const data = await request.json();
+
     // store the first array
     const dataArray = data.geonames[0];
+
     // store the country of the provided city
     tripData.country = dataArray.countryName;
-    // return the array
+
     return dataArray
 };
 
@@ -125,6 +128,7 @@ const getImg = async(url) => {
     const img = await fetch(url);
     // transform data to JSON
     const parseImg = await img.json();
+
     // store the img
     tripData.img = parseImg.hits[0].largeImageURL;
 };
@@ -142,26 +146,25 @@ const postData = async(url, data) => {
    
     try {
         const parsedData = await response.json();
-        console.log(parsedData)
         return parsedData;
     } catch(err) {
         console.log(err)
         alert(err)
     }
-  };
+};
 
 
 // update UI
-const updateUI = async(projectData) => { 
-    // transform data to JSON
-    const pData = await projectData.json()
+// const updateUI = async(projectData) => { 
+//     // transform data to JSON
+//     const pData = await projectData.json()
 
-    date.innerHTML = 'temperature: ' + pData.temperature;
-    temp.innerHTML = 'date: ' + pData.date;
+//     date.innerHTML = 'temperature: ' + pData.temperature;
+//     temp.innerHTML = 'date: ' + pData.date;
     
-    // check if the person enters a value in the feelings box 
-    content.innerHTML = feelings.value ? 'feelings: ' + pData.feelings: '';
-};
+//     // check if the person enters a value in the feelings box 
+//     content.innerHTML = feelings.value ? 'feelings: ' + pData.feelings: '';
+// };
 
 
 /* events */

@@ -1,6 +1,6 @@
 /* Global Variables */
 
-let tripData = {}
+const tripData = {}
 
 // Geonames url, username and para
 const baseGeo = 'http://api.geonames.org/searchJSON?';
@@ -14,7 +14,7 @@ const keyWthr = '&key=c6692bb0f86944599866726836674cdd';
 // Pixabay api
 const basePixUrl = 'https://pixabay.com/api/?';
 const keyPix = 'key=17510514-f3918d85b0fe161f2e31575c3';
-const paraPix = '&q=roma&image_type=photo&category=travel&safesearch=true'
+const paraPix = '&image_type=photo&category=travel&safesearch=true'
 
 // DOM elements
 const city = document.getElementById('city');
@@ -24,16 +24,16 @@ const temp = document.getElementById('temp');
 const content = document.getElementById('content');
 
 
-// get the Geonames data of the provided city 
-const getGeo = async(url) => {
-    const request = await fetch(url);
-    // transform data to JSON
-    const retrieved = await request.json();
-    return retrieved
-};
+/* helper functions */
 
+// store weather data
+const storeWthrData = (data) => {
+    tripData.highTemp = data.high_temp;
+    tripData.lowTemp = data.low_temp;
+    tripData.description = data.weather.description;
+}
 
-// helper func for tracking the days between the current date and the chosen one
+// check the days between the current date and the chosen one and store data
 const setLeftDays = (daysLeft) => {
     if (daysLeft === 0) {
         tripData.daysLeft = 'Today';
@@ -42,32 +42,95 @@ const setLeftDays = (daysLeft) => {
     } else {
         tripData.daysLeft = daysLeft
     }
-    console.log(tripData)
 }
 
+
+/* functions */
+
+// the main func which calls all other functions
+const chainCall = () => {
+    // check if the user puts a city
+    const cityVal = city.value;
+    if (cityVal === '' || cityVal.match(/\d/)) {
+        alert('Please enter a city');
+        return false
+    }
+
+    // call the url geonames
+    const urlGeo = baseGeo + 'q=' + cityVal + paraGeo + userName;
+    getGeo(urlGeo)
+
+    // call the weatherbit by coordinates
+    .then(data => {
+        const urlWthr = baseWthrUrl + `lat=${data.lat}&lon=${data.lng}` + keyWthr;
+        return getWthr(urlWthr)
+    })
+
+    // call the Pixabay url
+    .then(() => {
+        const pixUrl = basePixUrl + keyPix + '&q=' + cityVal + paraPix;
+        getImg(pixUrl);
+        console.log(tripData)
+    })
+
+    // finally post the tripData and update the UI
+    .then(() => {
+        postData('/postTrip', tripData)
+    })
+};
+
+// get the Geonames data of the provided city 
+const getGeo = async(url) => {
+    const request = await fetch(url);
+    // transform data to JSON
+    const data = await request.json();
+    // store the first array
+    const dataArray = data.geonames[0];
+    // store the country of the provided city
+    tripData.country = dataArray.countryName;
+    // return the array
+    return dataArray
+};
 
 // get the weatherbit data by coordinates 
 const getWthr = async(url) => {
     const request = await fetch(url);
     // transform data to JSON
-    const retrieved = await request.json();
+    const parsedData = await request.json();
 
-    // cheack which weather matches the chosen date and track the day of it
+    // store data arrays
+    const wthrData = parsedData.data;
+
+    // store the chosen date value
     const dateVal = date.value;
-    const wthrData = retrieved.data;
+
+    // initilize a var to track the range of days between the current date and the chosen one
     let daysLeft = 0;
+
+    // loop over the arrays to find a date that matches the chosen date
     for (const d of wthrData) {
         if (dateVal === d.datetime) {
-            setLeftDays(daysLeft)
+            // call the helper func to store data
+            storeWthrData(d);
+            // call the helper func to check the days
+            setLeftDays(daysLeft);
             return d
         }
         daysLeft++
     }
 };
 
+// get an img of the provided city
+const getImg = async(url) => {
+    const img = await fetch(url);
+    // transform data to JSON
+    const parseImg = await img.json();
+    // store the img
+    tripData.img = parseImg.hits[0].largeImageURL;
+};
 
-// post the retrieved weather data 
-const postWthr = async(url, data) => {
+// post the city data
+const postData = async(url, data) => {
     const response = await fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
@@ -78,23 +141,14 @@ const postWthr = async(url, data) => {
     });
    
     try {
-        const resData = await response.json();
-        console.log('retr', resData)
-        return resData;
+        const parsedData = await response.json();
+        console.log(parsedData)
+        return parsedData;
     } catch(err) {
         console.log(err)
         alert(err)
     }
   };
-
-// GET the projectData
-const getData = async() => {
-    //const projectData = await fetch('/all');
-    //updateUI(projectData)
-    const img = await fetch(basePixUrl + keyPix + paraPix)
-    const jos = await img.json()
-    console.log(jos.hits[0].largeImageURL)
-};
 
 
 // update UI
@@ -110,40 +164,15 @@ const updateUI = async(projectData) => {
 };
 
 
-// get the weather data from OpenWeatherMap, then post the data, finally get the data to update the UI
-const chainCall = () => {
-    // check if the user puts a city
-    const cityVal = city.value;
-    if (cityVal === '' || cityVal.match(/\d/)) {
-        alert('Please enter a city');
-        return false
-    }
-
-    // call the url geonames
-    const urlGeo = baseGeo + 'q=' + cityVal + paraGeo + userName;
-    getGeo(urlGeo)
-
-    // store the retrieved country name and send its coordinates to fetch the weather
-    .then(data => {
-        const dataArray = data.geonames[0];
-        tripData.country = dataArray.countryName;
-        const lat = dataArray.lat;
-        const lng = dataArray.lng;
-
-        // call the url weather
-        const urlWthr = baseWthrUrl + `lat=${lat}&lon=${lng}` + keyWthr;
-        getWthr(urlWthr)
-    })
-
-    .then(data => {
-
-    })
-};
+/* events */
 
 const formSub = form.addEventListener('submit', (e) => {
-    e.preventDefault()
-    chainCall()
+    e.preventDefault();
+    chainCall();
 })
+
+
+/* exports */
 
 export {
     chainCall,

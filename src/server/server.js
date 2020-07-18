@@ -1,3 +1,5 @@
+const tripData = {}
+
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -15,8 +17,15 @@ app.use(bodyParser.urlencoded({
 // Cors for cross origin allowance
 app.use(cors());
 
-
+// point the server to the main project folder
 app.use(express.static('dist'))
+
+// post trip data
+app.post('/postTrip', (req, res) =>{
+  console.log(req.body)
+  tripData.trip = req.body
+  res.send(tripData)
+})
 
 app.listen(3000, () => {
     console.log('the app is listening')

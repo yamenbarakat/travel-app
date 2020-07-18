@@ -1,4 +1,4 @@
-const tripData = {}
+let tripData = {};
 
 const express = require('express');
 const app = express();
@@ -23,7 +23,7 @@ app.use(express.static('dist'))
 // post trip data
 app.post('/postTrip', (req, res) =>{
   console.log(req.body)
-  tripData.trip = req.body
+  tripData = req.body
   res.send(tripData)
 })
 

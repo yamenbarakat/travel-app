@@ -21,9 +21,12 @@ const paraPix = '&image_type=photo&category=travel&safesearch=true'
 const city = document.getElementById('city');
 const form = document.getElementById('form');
 
+const weatherTitle = document.getElementById('weather-info');
+const country = document.getElementById('country');
+const daysCounter = document.getElementById('days-counter');
 const temp = document.getElementById('temp');
-const content = document.getElementById('content');
-
+const description = document.getElementById('description');
+const cityImg = document.querySelector('#city-img img')
 
 /* helper functions */
 
@@ -41,7 +44,7 @@ const setLeftDays = (daysLeft) => {
     } else if (daysLeft === 1) {
         tripData.daysLeft = 'Tommorow'
     } else {
-        tripData.daysLeft = daysLeft
+        tripData.daysLeft = daysLeft + ' days away'
     }
 }
 
@@ -70,18 +73,20 @@ const chainCall = () => {
     // call the Pixabay url
     .then(() => {
         const pixUrl = basePixUrl + keyPix + '&q=' + cityVal + paraPix;
-        getImg(pixUrl);
+        return getImg(pixUrl);
     })
 
-    // finally post the tripData and update the UI
+    // finally update the UI and post the tripData
     .then(() => {
-        console.log(tripData)
-        postData('/postTrip', tripData)
+        updateUI();
+        //postData('/postTrip', tripData);
     })
 };
 
 // get the Geonames data of the provided city 
 const getGeo = async(url) => {
+    console.log(tripData)
+
     const request = await fetch(url);
     // transform data to JSON
     const data = await request.json();
@@ -97,6 +102,8 @@ const getGeo = async(url) => {
 
 // get the weatherbit data by coordinates 
 const getWthr = async(url) => {
+    console.log(tripData)
+
     const request = await fetch(url);
     // transform data to JSON
     const parsedData = await request.json();
@@ -125,16 +132,23 @@ const getWthr = async(url) => {
 
 // get an img of the provided city
 const getImg = async(url) => {
+    console.log(tripData)
+
     const img = await fetch(url);
     // transform data to JSON
     const parseImg = await img.json();
 
-    // store the img
-    tripData.img = parseImg.hits[0].largeImageURL;
+    // store the img with its alt
+    const firstArray = parseImg.hits[0];
+    console.log(parseImg)
+    tripData.img = firstArray.largeImageURL;
+    tripData.alt = firstArray.tags;
 };
 
 // post the city data
 const postData = async(url, data) => {
+    console.log(tripData)
+
     const response = await fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
@@ -153,18 +167,17 @@ const postData = async(url, data) => {
     }
 };
 
-
 // update UI
-// const updateUI = async(projectData) => { 
-//     // transform data to JSON
-//     const pData = await projectData.json()
-
-//     date.innerHTML = 'temperature: ' + pData.temperature;
-//     temp.innerHTML = 'date: ' + pData.date;
-    
-//     // check if the person enters a value in the feelings box 
-//     content.innerHTML = feelings.value ? 'feelings: ' + pData.feelings: '';
-// };
+const updateUI = () => { 
+    console.log(tripData)
+    weatherTitle.textContent = 'Travel Info';
+    country.innerHTML        = 'Country: '     + tripData.country;
+    temp.innerHTML           = 'Temperature: ' + `high: ${tripData.highTemp},  low: ${tripData.lowTemp}`;
+    description.innerHTML    = 'Description: ' + tripData.description;
+    daysCounter.textContent  = 'The trip is '  + tripData.daysLeft;
+    cityImg.src              = tripData.img
+    cityImg.alt              = tripData.tags
+};
 
 
 /* events */

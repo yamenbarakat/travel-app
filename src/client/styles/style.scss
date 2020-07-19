@@ -20,7 +20,7 @@ body {
 
 #app {
     display: grid;
-    grid-template-rows: 14vh min($numbers: 76vh) 10vh;
+    grid-template-rows: 14vh minmax(76vh, auto) 10vh;
 }
 
 h1, #form, .entry, footer {
@@ -49,6 +49,10 @@ main {
     display: grid;
     grid-template-rows: 230px auto;;
 
+    h2 {
+        margin-top: 0;
+    }
+
     #form {
         display: grid;
         grid-template-rows: repeat(3, 1fr);
@@ -64,8 +68,8 @@ main {
         }
 
         button {
-            width: auto;
-            height: 28px;
+            width: 100px;
+            height: 40px;
             background-color: #23191173;
             color: $font-main-color;
             font-weight: bold;

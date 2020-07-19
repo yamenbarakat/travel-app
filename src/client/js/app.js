@@ -31,6 +31,18 @@ const caption = document.querySelector('#city-img figcaption')
 
 /* helper functions */
 
+// check if the user put a value that consists from letters and more than one letter
+const checkInputCity = (c) => {
+    const cityVal = c;
+    if (cityVal === '' || cityVal.match(/\d/) || c.length < 2) {
+        alert('Please enter a city');
+        return false
+    } else {
+        return c
+    }
+}
+
+
 // store weather data
 const storeWthrData = (data) => {
     tripData.highTemp = data.high_temp;
@@ -55,11 +67,7 @@ const setLeftDays = (daysLeft) => {
 // the main func which calls all other functions
 const chainCall = () => {
     // check if the user puts a city
-    const cityVal = 'rome';
-    if (cityVal === '' || cityVal.match(/\d/)) {
-        alert('Please enter a city');
-        return false
-    }
+    const cityVal = checkInputCity('rome');
 
     // call the url geonames
     const urlGeo = baseGeo + 'q=' + cityVal + paraGeo + userName;
@@ -165,7 +173,7 @@ const updateUI = () => {
     weatherTitle.textContent = 'Travel Info :';
     country.innerHTML        = 'Country: '     + tripData.country;
     temp.innerHTML           = 'Temperature: ' + `high: ${tripData.highTemp},  low: ${tripData.lowTemp}`;
-    description.innerHTML    = 'Description: ' + tripData.description;
+    description.innerHTML    = 'There will be: ' + tripData.description;
     daysCounter.textContent  = 'The trip is '  + tripData.daysLeft;
     cityImg.src              = tripData.img;
     caption.textContent      = 'This is an image of ' + tripData.alt;
@@ -175,9 +183,12 @@ const updateUI = () => {
 /* events */
 
 
-    chainCall();
+// chainCall();
 
 
 
 /* exports */
 
+export {
+    checkInputCity
+}

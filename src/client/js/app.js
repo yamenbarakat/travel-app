@@ -162,7 +162,7 @@ const postData = async(url, data) => {
 
 // update UI
 const updateUI = () => { 
-    weatherTitle.textContent = 'Travel Info';
+    weatherTitle.textContent = 'Travel Info :';
     country.innerHTML        = 'Country: '     + tripData.country;
     temp.innerHTML           = 'Temperature: ' + `high: ${tripData.highTemp},  low: ${tripData.lowTemp}`;
     description.innerHTML    = 'Description: ' + tripData.description;

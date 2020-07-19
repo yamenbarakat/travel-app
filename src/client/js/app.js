@@ -20,13 +20,13 @@ const paraPix = '&image_type=photo&category=travel&safesearch=true'
 // DOM elements
 const city = document.getElementById('city');
 const form = document.getElementById('form');
-
 const weatherTitle = document.getElementById('weather-info');
 const country = document.getElementById('country');
 const daysCounter = document.getElementById('days-counter');
 const temp = document.getElementById('temp');
 const description = document.getElementById('description');
 const cityImg = document.querySelector('#city-img img')
+
 
 /* helper functions */
 
@@ -40,9 +40,9 @@ const storeWthrData = (data) => {
 // check the days between the current date and the chosen one and store data
 const setLeftDays = (daysLeft) => {
     if (daysLeft === 0) {
-        tripData.daysLeft = 'Today';
+        tripData.daysLeft = 'today';
     } else if (daysLeft === 1) {
-        tripData.daysLeft = 'Tommorow'
+        tripData.daysLeft = 'tommorow'
     } else {
         tripData.daysLeft = daysLeft + ' days away'
     }
@@ -79,14 +79,12 @@ const chainCall = () => {
     // finally update the UI and post the tripData
     .then(() => {
         updateUI();
-        //postData('/postTrip', tripData);
+        postData('/postTrip', tripData);
     })
 };
 
 // get the Geonames data of the provided city 
 const getGeo = async(url) => {
-    console.log(tripData)
-
     const request = await fetch(url);
     // transform data to JSON
     const data = await request.json();
@@ -102,8 +100,6 @@ const getGeo = async(url) => {
 
 // get the weatherbit data by coordinates 
 const getWthr = async(url) => {
-    console.log(tripData)
-
     const request = await fetch(url);
     // transform data to JSON
     const parsedData = await request.json();
@@ -132,23 +128,18 @@ const getWthr = async(url) => {
 
 // get an img of the provided city
 const getImg = async(url) => {
-    console.log(tripData)
-
     const img = await fetch(url);
     // transform data to JSON
     const parseImg = await img.json();
 
     // store the img with its alt
     const firstArray = parseImg.hits[0];
-    console.log(parseImg)
     tripData.img = firstArray.largeImageURL;
     tripData.alt = firstArray.tags;
 };
 
 // post the city data
 const postData = async(url, data) => {
-    console.log(tripData)
-
     const response = await fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
@@ -169,14 +160,14 @@ const postData = async(url, data) => {
 
 // update UI
 const updateUI = () => { 
-    console.log(tripData)
+    console.log(tripData.img)
     weatherTitle.textContent = 'Travel Info';
     country.innerHTML        = 'Country: '     + tripData.country;
     temp.innerHTML           = 'Temperature: ' + `high: ${tripData.highTemp},  low: ${tripData.lowTemp}`;
     description.innerHTML    = 'Description: ' + tripData.description;
     daysCounter.textContent  = 'The trip is '  + tripData.daysLeft;
-    cityImg.src              = tripData.img
-    cityImg.alt              = tripData.tags
+    cityImg.src              = tripData.img;
+    cityImg.alt              = tripData.tags;
 };
 
 

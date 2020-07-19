@@ -22,8 +22,8 @@ app.use(express.static('dist'))
 
 // post trip data
 app.post('/postTrip', (req, res) =>{
-  console.log(req.body)
   tripData = req.body
+  console.log(tripData)
   res.send(tripData)
 })
 

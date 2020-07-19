@@ -59,6 +59,7 @@ main {
         align-items: center;
 
         input, button {
+            display: block;
             margin-top: 5px;
             border-radius: 4px;
             border: #333;
@@ -86,7 +87,19 @@ main {
     }
 }
 
-
 footer {
     background-color: $sub-color;
 }
+
+/* media query */ /* the dimensions are from bootstrap */
+
+// $phones: 576px;
+// @media (min-width: $phones) {
+//     .container-sm {
+//         width: 540px;
+//     }
+
+//     h2 {
+//         color : red
+//     }
+// }

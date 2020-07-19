@@ -26,6 +26,7 @@ const daysCounter = document.getElementById('days-counter');
 const temp = document.getElementById('temp');
 const description = document.getElementById('description');
 const cityImg = document.querySelector('#city-img img')
+const caption = document.querySelector('#city-img figcaption')
 
 
 /* helper functions */
@@ -54,7 +55,7 @@ const setLeftDays = (daysLeft) => {
 // the main func which calls all other functions
 const chainCall = () => {
     // check if the user puts a city
-    const cityVal = city.value;
+    const cityVal = 'rome';
     if (cityVal === '' || cityVal.match(/\d/)) {
         alert('Please enter a city');
         return false
@@ -79,7 +80,7 @@ const chainCall = () => {
     // finally update the UI and post the tripData
     .then(() => {
         updateUI();
-        postData('/postTrip', tripData);
+        //postData('/postTrip', tripData);
     })
 };
 
@@ -108,7 +109,7 @@ const getWthr = async(url) => {
     const wthrData = parsedData.data;
 
     // store the chosen date value
-    const dateVal = date.value;
+    const dateVal = '2020-07-20';
 
     // initilize a var to track the range of days between the current date and the chosen one
     let daysLeft = 0;
@@ -134,6 +135,7 @@ const getImg = async(url) => {
 
     // store the img with its alt
     const firstArray = parseImg.hits[0];
+    console.log(tripData)
     tripData.img = firstArray.largeImageURL;
     tripData.alt = firstArray.tags;
 };
@@ -160,28 +162,22 @@ const postData = async(url, data) => {
 
 // update UI
 const updateUI = () => { 
-    console.log(tripData.img)
     weatherTitle.textContent = 'Travel Info';
     country.innerHTML        = 'Country: '     + tripData.country;
     temp.innerHTML           = 'Temperature: ' + `high: ${tripData.highTemp},  low: ${tripData.lowTemp}`;
     description.innerHTML    = 'Description: ' + tripData.description;
     daysCounter.textContent  = 'The trip is '  + tripData.daysLeft;
     cityImg.src              = tripData.img;
-    cityImg.alt              = tripData.tags;
+    caption.textContent      = 'This is an image of ' + tripData.alt;
 };
 
 
 /* events */
 
-const formSub = form.addEventListener('submit', (e) => {
-    e.preventDefault();
+
     chainCall();
-})
+
 
 
 /* exports */
 
-export {
-    chainCall,
-    formSub
-}

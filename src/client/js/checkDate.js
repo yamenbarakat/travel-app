@@ -59,7 +59,6 @@ const dateUpdate = window.addEventListener('load', () => {
     const check = checkDays(months, days);
     const maxDate = isTen(years, check[0], check[1])
     date.setAttribute('max', maxDate);
-
 })
 
 

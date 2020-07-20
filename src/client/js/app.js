@@ -67,7 +67,7 @@ const setLeftDays = (daysLeft) => {
 // the main func which calls all other functions
 const chainCall = () => {
     // check if the user puts a city
-    const cityVal = checkInputCity('rome');
+    const cityVal = checkInputCity(city.value);
 
     // call the url geonames
     const urlGeo = baseGeo + 'q=' + cityVal + paraGeo + userName;
@@ -88,7 +88,7 @@ const chainCall = () => {
     // finally update the UI and post the tripData
     .then(() => {
         updateUI();
-        //postData('/postTrip', tripData);
+        postData('/postTrip', tripData);
     })
 };
 
@@ -117,7 +117,7 @@ const getWthr = async(url) => {
     const wthrData = parsedData.data;
 
     // store the chosen date value
-    const dateVal = '2020-07-20';
+    const dateVal = date.value;
 
     // initilize a var to track the range of days between the current date and the chosen one
     let daysLeft = 0;
@@ -143,7 +143,6 @@ const getImg = async(url) => {
 
     // store the img with its alt
     const firstArray = parseImg.hits[0];
-    console.log(tripData)
     tripData.img = firstArray.largeImageURL;
     tripData.alt = firstArray.tags;
 };

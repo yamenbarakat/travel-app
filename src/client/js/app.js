@@ -143,7 +143,6 @@ const getImg = async(url) => {
 
     // store the img with its alt
     const firstArray = parseImg.hits[0];
-    console.log(tripData)
     tripData.img = firstArray.largeImageURL;
     tripData.alt = firstArray.tags;
 };
@@ -191,10 +190,7 @@ const formSub = form.addEventListener('submit', (e) => {
 /* exports */
 
 export {
+    checkInputCity,
     chainCall,
     formSub
-}
-
-export {
-    checkInputCity
 }

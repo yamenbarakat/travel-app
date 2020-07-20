@@ -63,4 +63,4 @@ const dateUpdate = window.addEventListener('load', () => {
 })
 
 
-//export {dateUpdate}
+export {dateUpdate}

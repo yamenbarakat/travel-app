@@ -182,13 +182,16 @@ const updateUI = () => {
 
 /* events */
 
-
-// chainCall();
-
+const formSub = form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    chainCall();
+})
 
 
 /* exports */
 
 export {
-    checkInputCity
+    checkInputCity,
+    chainCall,
+    formSub
 }

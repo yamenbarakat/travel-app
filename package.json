@@ -4,6 +4,7 @@
   "description": "## Overview This project requires you to create an asynchronous web app that uses Web API and user data to dynamically update the UI.",
   "main": "server.js",
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.10.5",
     "@babel/polyfill": "^7.10.4",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",

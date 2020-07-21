@@ -7,7 +7,7 @@ module.exports = {
     entry: './src/client/index.js',
     output: {
         libraryTarget: 'var',
-        library: 'client'
+        library: 'Client'
     },
     devtool: 'source-map',
     stats: 'verbose',
@@ -18,10 +18,6 @@ module.exports = {
                 test: '/\.js$/',
                 exclude: /node_modules/,
                 loader: "babel-loader"
-            },
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
             },
             {
                 test: /\.(png|jpe?g|gif)$/i,

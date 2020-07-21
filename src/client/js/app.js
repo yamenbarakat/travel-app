@@ -55,7 +55,7 @@ const setLeftDays = (daysLeft) => {
 // the main func which calls all other functions
 const chainCall = () => {
     // check if the user puts a city
-    const cityVal = checkInputCity(city.value);
+    const cityVal = checkCity(city.value);
 
     city.value = '';
 
@@ -182,6 +182,5 @@ const formSub = form.addEventListener('submit', (e) => {
 /* exports */
 
 export {
-    chainCall,
     formSub
 }

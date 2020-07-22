@@ -1,7 +1,10 @@
-/* Global Variables */
+import {checkCity} from './checkInputCity';
 
 // to store all the needed data for the trip
-const tripData = {}
+let tripData = {}
+
+
+/* Global Variables */
 
 // Geonames url, username and para
 const baseGeo = 'http://api.geonames.org/searchJSON?';
@@ -79,6 +82,11 @@ const chainCall = () => {
     .then(() => {
         updateUI();
         postData('/postTrip', tripData);
+    })
+
+    // clear the old data if there is and set the new one in the localStorage
+    .then(() => {
+        localStorage.getItem('trip') ? localStorage.clear() : localStorage.setItem('trip', JSON.stringify(tripData));
     })
 };
 
@@ -170,17 +178,30 @@ const updateUI = () => {
     cityImg.src              = tripData.img;
 };
 
+// load the data in the localStorage if there is
+const storage = () => {
+    if (localStorage.getItem('trip')) {
+        tripData = JSON.parse(localStorage.getItem('trip'));
+        updateUI();
+    } 
+}
+
 
 /* events */
 
 const formSub = form.addEventListener('submit', (e) => {
     e.preventDefault();
     chainCall();
+}) 
+
+const loadStorage = window.addEventListener('load', () => {
+    storage();
 })
 
 
 /* exports */
 
 export {
-    formSub
+    formSub,
+    loadStorage
 }

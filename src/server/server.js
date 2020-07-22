@@ -1,6 +1,7 @@
 const app = require('./app')
 
+// set the server on port 3000
 app.listen(3000, () => {
-    console.log('the app is listening')
+    console.log('The app is listening on port:3000');
 })
 

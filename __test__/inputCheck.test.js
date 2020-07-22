@@ -1,20 +1,17 @@
-import {checkCity} from '../src/client/js/checkInputCity.js';
+import {setLeftDays} from '../src/client/js/app';
 
-test("check if the city is provided", () => {
-
-  expect(checkCity('damascus')).toBe('damascus');
-
-});
-
+// This is for making alert function works
+window.alert = jest.fn();
 
 test("check if the letters less than two", () => {
-  expect(checkCity('a')).toBeFalsy();
 
-  expect(checkCity('')).toBeFalsy();
+  window.alert.mockClear();
 
-  expect(checkCity('1')).toBeFalsy();
+  expect(setLeftDays(0)).toBe('today');
 
-  expect(checkCity('aa')).toBeTruthy();
+  expect(setLeftDays(1)).toBe('tommorow');
+
+  expect(setLeftDays(2)).toBe('2 days away');
 
 });
   

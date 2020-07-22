@@ -15,11 +15,17 @@ The project has a simple form where you enter the location you are traveling to 
 - installing jest for testing functions
 
 ## Here is how it works :
-You enter a city and a date - the date is limited to 16 days- and then click on submit,
-The Geonames API is called to get the coordinates of the city,
-The coordinates are used to get the weather data using Weatherbit API,
-The Pixabay API is called to get an image based on the provided city, 
-Once we get these data, we display them in the document and post them to the server.
+1. You start the express server by typing - npm start - Or you can use webpack server for development by typing - npm run dev -
+2. You enter a city and choose a date - the date is limited to 16 days - and then click on submit.
+** What would happen is:
+* The Geonames API is called to get the coordinates of the city,
+* The coordinates are used to get the weather data using Weatherbit API,
+* The Pixabay API is called to get an image based on the provided city, 
+* Once we get these data, we display them in the document and post them to the server.
+
+## To develop the app
+If you want to make changes to the app, you can run the webpack development mode by typing - npm run dev - and after you finish and are satisfied with changes, you need to take those changes for production. To do that run the webpack production by typing - npm run build -
+
 
 
 ### Note : from the Extend Options I used the localStorage option

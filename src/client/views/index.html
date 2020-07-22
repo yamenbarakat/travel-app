@@ -4,19 +4,25 @@
 <head>
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Travel Planner</title>
-  <link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+  <!-- app container --> 
   <div id="app" class="container">
+
+    <!-- header -->
     <header>
       <h1>Travel Planner</h1>
     </header>
+
+    <!-- main -->
     <main>
+
+      <!-- form -->
       <form id="form">
         <div class="holder city">
           <label for="city">Enter a city you want to travel to:</label>
-          <input type="text" id="city">
+          <input type="text" id="city" pattern="[a-zA-Z]{2,}" required>
         </div>
         <div class="holder date">
           <label for="datetime">Enter the date you are leaving:</label>
@@ -24,6 +30,8 @@
         </div>
         <button id="generate" type="submit">Submit</button>
       </form>
+
+      <!-- weather info -->
       <div class="holder entry">
         <h2 id="weather-info"></h2>
         <div id="entryHolder">
@@ -40,12 +48,15 @@
         </div>
       </div>
     </main>
+
+    <!-- footer -->
     <footer>
       <div class="author">made with <span>&hearts;</span> by Yamen</div>
       <div class="date-made">All rights reserved &copy; 7/22/2020</div>
     </footer>
   </div>
 
+  <!-- scripts -->
   <script>
     // Check that service workers are supported
     if ('serviceWorker' in navigator) {

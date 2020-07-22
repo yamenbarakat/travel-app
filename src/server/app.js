@@ -1,3 +1,4 @@
+// for storing all the trip data
 let tripData = {};
 
 const express = require('express');

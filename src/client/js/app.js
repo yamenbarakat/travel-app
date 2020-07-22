@@ -1,5 +1,3 @@
-import {checkCity} from './checkInputCity';
-
 // to store all the needed data for the trip
 let tripData = {}
 
@@ -50,6 +48,7 @@ const setLeftDays = (daysLeft) => {
     } else {
         tripData.daysLeft = daysLeft + ' days away'
     }
+    return tripData.daysLeft;
 }
 
 
@@ -57,16 +56,15 @@ const setLeftDays = (daysLeft) => {
 
 // the main func which calls all other functions
 const chainCall = () => {
-    // check if the user puts a city
-    const cityVal = checkCity(city.value);
-
+    // store the city's input value and then clear the input
+    const cityVal = city.value;
     city.value = '';
 
-    // call the url geonames
+    // Pass the city into geonames url and call it
     const urlGeo = baseGeo + 'q=' + cityVal + paraGeo + userName;
     getGeo(urlGeo)
 
-    // call the weatherbit by coordinates
+    // Pass the city's coordinates that retrieved from geonames to call weatherbit
     .then(data => {
         const urlWthr = baseWthrUrl + `lat=${data.lat}&lon=${data.lng}` + keyWthr;
         return getWthr(urlWthr)
@@ -178,30 +176,28 @@ const updateUI = () => {
     cityImg.src              = tripData.img;
 };
 
-// load the data in the localStorage if there is
-const storage = () => {
+
+/* events */
+
+const formSub = document.addEventListener('DOMContentLoaded', () => {
+    // call the chainCall by submiting the form
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        chainCall();
+    })
+
+    // load the data in the localStorage if there is
     if (localStorage.getItem('trip')) {
         tripData = JSON.parse(localStorage.getItem('trip'));
         updateUI();
     } 
-}
-
-
-/* events */
-
-const formSub = form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    chainCall();
-}) 
-
-const loadStorage = window.addEventListener('load', () => {
-    storage();
-})
+});
 
 
 /* exports */
 
 export {
-    formSub,
-    loadStorage
+    setLeftDays,
+    chainCall,
+    formSub
 }

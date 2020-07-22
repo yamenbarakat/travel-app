@@ -42,10 +42,19 @@
     </main>
     <footer>
       <div class="author">made with <span>&hearts;</span> by Yamen</div>
-      <div class="date-made">All rights reserved &copy; 4/15/2020</div>
+      <div class="date-made">All rights reserved &copy; 7/22/2020</div>
     </footer>
   </div>
 
+  <script>
+    // Check that service workers are supported
+    if ('serviceWorker' in navigator) {
+        // Use the window load event to keep the page load performant
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js');
+        });
+    }
+   </script>
 </body>
 
 </html>

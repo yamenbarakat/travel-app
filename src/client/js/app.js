@@ -1,7 +1,10 @@
-/* Global Variables */
+import {checkCity} from './checkInputCity';
 
 // to store all the needed data for the trip
-const tripData = {}
+let tripData = {}
+
+
+/* Global Variables */
 
 // Geonames url, username and para
 const baseGeo = 'http://api.geonames.org/searchJSON?';
@@ -31,18 +34,6 @@ const caption = document.querySelector('#city-img figcaption')
 
 /* helper functions */
 
-// check if the user put a value that consists from letters and more than one letter
-const checkInputCity = (c) => {
-    const cityVal = c;
-    if (cityVal.match(/\d/) || (c.match(/^[A-Za-z]+$/) && c.length < 2)) {
-        alert('Please enter a city');
-        return false
-    } else {
-        return c
-    }
-}
-
-
 // store weather data
 const storeWthrData = (data) => {
     tripData.highTemp = data.high_temp;
@@ -67,7 +58,9 @@ const setLeftDays = (daysLeft) => {
 // the main func which calls all other functions
 const chainCall = () => {
     // check if the user puts a city
-    const cityVal = checkInputCity(city.value);
+    const cityVal = checkCity(city.value);
+
+    city.value = '';
 
     // call the url geonames
     const urlGeo = baseGeo + 'q=' + cityVal + paraGeo + userName;
@@ -89,6 +82,11 @@ const chainCall = () => {
     .then(() => {
         updateUI();
         postData('/postTrip', tripData);
+    })
+
+    // clear the old data if there is and set the new one in the localStorage
+    .then(() => {
+        localStorage.getItem('trip') ? localStorage.clear() : localStorage.setItem('trip', JSON.stringify(tripData));
     })
 };
 
@@ -118,6 +116,8 @@ const getWthr = async(url) => {
 
     // store the chosen date value
     const dateVal = date.value;
+
+    date.value = '';
 
     // initilize a var to track the range of days between the current date and the chosen one
     let daysLeft = 0;
@@ -170,13 +170,21 @@ const postData = async(url, data) => {
 // update UI
 const updateUI = () => { 
     weatherTitle.textContent = 'Travel Info :';
-    country.innerHTML        = 'Country: '     + tripData.country;
-    temp.innerHTML           = 'Temperature: ' + `high: ${tripData.highTemp},  low: ${tripData.lowTemp}`;
-    description.innerHTML    = 'There will be: ' + tripData.description;
-    daysCounter.textContent  = 'The trip is '  + tripData.daysLeft;
-    cityImg.src              = tripData.img;
+    country.innerHTML        = 'Country: '            + tripData.country;
+    temp.innerHTML           = 'Temperature: '        + `high: ${tripData.highTemp},  low: ${tripData.lowTemp}`;
+    description.innerHTML    = 'There will be '       + tripData.description;
+    daysCounter.textContent  = 'The trip is '         + tripData.daysLeft;
     caption.textContent      = 'This is an image of ' + tripData.alt;
+    cityImg.src              = tripData.img;
 };
+
+// load the data in the localStorage if there is
+const storage = () => {
+    if (localStorage.getItem('trip')) {
+        tripData = JSON.parse(localStorage.getItem('trip'));
+        updateUI();
+    } 
+}
 
 
 /* events */
@@ -184,13 +192,16 @@ const updateUI = () => {
 const formSub = form.addEventListener('submit', (e) => {
     e.preventDefault();
     chainCall();
+}) 
+
+const loadStorage = window.addEventListener('load', () => {
+    storage();
 })
 
 
 /* exports */
 
 export {
-    checkInputCity,
-    chainCall,
-    formSub
+    formSub,
+    loadStorage
 }

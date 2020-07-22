@@ -1,20 +1,20 @@
-import {checkInputCity} from '../src/client/js/app.js';
+import {checkCity} from '../src/client/js/checkInputCity.js';
 
 test("check if the city is provided", () => {
 
-    expect(checkInputCity('damascus')).toBe('damascus');
-  
-  });
+  expect(checkCity('damascus')).toBe('damascus');
 
-  test("check if the letters less than two", () => {
+});
 
-    expect(checkInputCity('a')).toBeFalsy();
 
-    expect(checkInputCity('')).toBeFalsy();
+test("check if the letters less than two", () => {
+  expect(checkCity('a')).toBeFalsy();
 
-    expect(checkInputCity('1')).toBeFalsy();
+  expect(checkCity('')).toBeFalsy();
 
-    expect(checkInputCity('aa')).toBeTruthy();
-  
-  });
+  expect(checkCity('1')).toBeFalsy();
+
+  expect(checkCity('aa')).toBeTruthy();
+
+});
   
